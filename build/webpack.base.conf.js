@@ -38,7 +38,8 @@ module.exports = {
       'less': resolve('src/assets/styles'),
       'components': resolve('src/components'),
       'api': resolve('src/api'),
-      'common': resolve('src/common')
+      'common': resolve('src/common'),
+      'assets':resove('src/assets')
     }
   },
   module: {

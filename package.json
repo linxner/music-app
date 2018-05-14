@@ -76,7 +76,8 @@
     "webpack-merge": "^4.1.0",
     "less":"3.0.4",
     "less-loader": "4.1.0",
-    "element-ui":"2.3.8"
+    "element-ui":"2.3.8",
+    "jsonp":"0.2.1"
   },
   "engines": {
     "node": ">= 6.0.0",
