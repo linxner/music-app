@@ -3,7 +3,7 @@
 
     <ul class="tab">
       <li>
-        <i class="icon"></i>
+        <i class="iconfont icon-lanmu"></i>
       </li>
       <router-link tag="li" to="/mine">我的</router-link>
       <router-link tag="li" to="musichouse">音乐馆</router-link>
@@ -16,11 +16,13 @@
   </div>
 </template>
 <style lang="less" scoped>
+
 @import "~less/index.less";
+
 .header {
     background-color: @background-color;
     width: 100%;
-    font-size: 16px;
+    font-size: 18px;
     text-align: center;
     padding-bottom: 10px;
     .tab {
@@ -32,6 +34,11 @@
             display: inline-block;
             letter-spacing: normal;
             width: 20%;
+          &:nth-of-type(1) {
+            box-sizing: border-box;
+            text-align: left;
+            padding-left: 15px;
+          }
             &:nth-of-type(5) {
                 box-sizing: border-box;
                 text-align: right;
@@ -42,5 +49,6 @@
     .el-input {
         width: 90%;
     }
+
 }
 </style>

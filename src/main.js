@@ -7,6 +7,8 @@ import './assets/styles/index.less'
 import './assets/css/normalize.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import './assets/icons/font_6h3mvowtawcdi/iconfont.css'
+import $ from 'jquery'
 
 
 Vue.use(ElementUI)
