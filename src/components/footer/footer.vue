@@ -19,7 +19,20 @@
 </template>
 
 <script>
-  export default {}
+  import {getAjax} from "../../assets/js/ajax";
+  import {url} from "../../assets/js/url";
+
+  export default {
+ created(){
+  this.$axios({
+    method:'post',
+    url:url.url,
+  }).then(res=>{
+    console.log('ok')
+  })
+ }
+
+  }
 </script>
 
 <style scoped lang="less">

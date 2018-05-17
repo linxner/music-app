@@ -32,11 +32,12 @@
     width: 93%;
     margin: 0 auto;
     background-color: #fff;
+    z-index: 99;
     .tablist {
       width: 100%;
       height: 70px;
       position: absolute;
-      top: -5px;
+      top: -3px;
       right: 0;
       list-style: none;
       letter-spacing: -0.5em;

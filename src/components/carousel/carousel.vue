@@ -1,12 +1,12 @@
 <template>
   <div class="carousel">
     <div class="block">
-      <el-carousel trigger="click" height="150px">
-        <el-carousel-item v-for="item in imgurl" :key="item">
-          <img :src="item" alt="" style="width: 100%;height: 170px;">
-        </el-carousel-item>
-      </el-carousel>
-    </div>
+    <el-carousel trigger="click" height="150px">
+      <el-carousel-item v-for="item in imgurl" :key="item">
+        <img :src="item" alt="" style="height:170px">
+      </el-carousel-item>
+    </el-carousel>
+  </div>
   </div>
 </template>
 
@@ -19,7 +19,6 @@
       }
     },
     created(){
-      console.log(this.imgurl)
       this.getimg()
     },
     methods:{
@@ -30,7 +29,7 @@
           type:'post',
           dataType:'jsonp',
           success(res){
-            res.imgurl=res.focus.data
+            // console.log(typeof(res.focus.data.content))
             for(var k in res.focus.data.content){
               that.imgurl.push(res.focus.data.content[k].pic_info.url)
             }
@@ -61,6 +60,8 @@
 <style lang="less" scoped>
   .carousel {
     width: 100%;
-    height: 170px;
+   .el-carousel__arrow {
+     display: none;
+   }
   }
 </style>
