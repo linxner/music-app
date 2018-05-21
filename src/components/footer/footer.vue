@@ -19,19 +19,17 @@
 </template>
 
 <script>
-  import {getAjax} from "../../assets/js/ajax";
-  import {url} from "../../assets/js/url";
+  import {data} from "../../assets/js/ajax";
 
   export default {
- created(){
-  this.$axios({
-    method:'post',
-    url:url.url,
-  }).then(res=>{
-    console.log('ok')
-  })
- }
-
+  // data(){
+  //   return {
+  //     url:data.focus
+  //   }
+  // },
+  //   created(){
+  //   console.log(this.url)
+  //   }
   }
 </script>
 

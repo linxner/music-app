@@ -1,6 +1,5 @@
 <template>
   <div class="header">
-
     <ul class="tab">
       <li>
         <i class="iconfont icon-lanmu"></i>
@@ -22,7 +21,7 @@
 .header {
     background-color: @background-color;
     width: 100%;
-    font-size: 18px;
+    font-size: 1.6rem;
     text-align: center;
     padding-bottom: 10px;
     .tab {
