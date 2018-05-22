@@ -10,7 +10,7 @@
       </carousel>
     </div>
     <div class="tab">
-    <tabs></tabs>      
+      <tabs></tabs>    
     </div>
     <recommend>
       <div class="rec-content">

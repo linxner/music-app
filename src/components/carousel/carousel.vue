@@ -39,27 +39,27 @@ export default {
       this._setWidth()
       this._initDots()
       this._initSlider()
-      if(this.autoPlay){
+      if (this.autoPlay) {
         this._play()
       }
     }, 20)
-    window.addEventListener('resize',()=>{
-      if(!this.slider){
+    window.addEventListener('resize', () => {
+      if (!this.slider) {
         return
       }
       this._setWidth(true)
       this.slider.refresh()
     })
   },
-  activated(){
-    if(this.autoPlay){
+  activated() {
+    if (this.autoPlay) {
       this._play()
     }
   },
-  deactivated(){
+  deactivated() {
     clearTimeout(this.timmer)
   },
-  beforeDestroy(){
+  beforeDestroy() {
     clearTimeout(this.timmer)
   },
   methods: {
@@ -72,8 +72,8 @@ export default {
         child.style.width = sliderWidth + 'px'
         width += sliderWidth
       }
-      if (this.loop&&!isResize) {
-      width += 2 * sliderWidth
+      if (this.loop && !isResize) {
+        width += 2 * sliderWidth
       }
       this.$refs.sliderItems.style.width = width + 'px'
     },
@@ -90,24 +90,24 @@ export default {
           threshold: 0.3
         }
       })
-      this.slider.on('scrollEnd',()=>{
-        let pageIndex=this.slider.getCurrentPage().pageX
-        this.currentPage=pageIndex
-        if(this.autoPlay){
+      this.slider.on('scrollEnd', () => {
+        let pageIndex = this.slider.getCurrentPage().pageX
+        this.currentPage = pageIndex
+        if (this.autoPlay) {
           this._play()
         }
       })
-      this.slider.on('beforeScroll',()=>{
-        if(this.autoPlay){
+      this.slider.on('beforeScroll', () => {
+        if (this.autoPlay) {
           clearTimeout(this.timmer)
         }
       })
     },
-    _play(){
+    _play() {
       clearTimeout(this.timmer)
-      this.timmer= setTimeout(()=>{
+      this.timmer = setTimeout(() => {
         this.slider.next()
-      },this.interval)
+      }, this.interval)
     }
   }
 }
