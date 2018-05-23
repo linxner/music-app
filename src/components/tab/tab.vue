@@ -1,7 +1,7 @@
 <template>
   <div class="tabs" ref="tabs">
-    <ul :class="{tablist:add,abs:!add}">
-      <router-link tag="li" to="singer">
+    <ul class="tablist">
+      <router-link tag="li" :to="{name:'Singer'}">
         <div>
           <i class="iconfont icon-rentou"></i>
         </div>
@@ -38,18 +38,30 @@
 export default {
   data() {
     return {
-      thisTop: 0,
-      add: true
+      scroll: '',
+      Top: '',
+    }
+  },
+  watch: {
+    scroll() {
+      if (this.scroll < 4) {
+        $('.tablist').css('top', parseInt(this.Top) + this.scroll)
+      }
+      else {
+        $('.tablist').css('top', 0)
+      }
     }
   },
   mounted() {
+    this._getTop()
     $(window).scroll(function () {
-      this.thisTop = $(window).scrollTop()
-      this.add = this.thisTop > 3 ? false : true
+      this.scroll = $(window).scrollTop()
     }.bind(this))
   },
   methods: {
-  
+    _getTop() {
+      this.Top = $('.tablist').css('top')
+    },
   }
 }
 </script>
@@ -63,37 +75,10 @@ export default {
   background-color: #fff;
   z-index: 99;
   .tablist {
-    width: 93%;
-    height: 70px;
-    position: fixed;
-    top: 227px;
-    margin: 0 auto;
-    list-style: none;
-    letter-spacing: -0.5em;
-    background-color: #fff;
-    text-align: center;
-    box-shadow: 3px 3px #eee;
-    padding: 10px 0;
-    li {
-      width: 20%;
-      display: inline-block;
-      letter-spacing: normal;
-      color: #000;
-      font-size: 1.4rem;
-      line-height: 1.8;
-      cursor: pointer;
-      .iconfont {
-        color: @background-color;
-        font-size: 2.5rem;
-      }
-    }
-  }
-  .abs {
     width: 100%;
-    height: 70px;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -3px;
+    margin: 0 auto;
     list-style: none;
     letter-spacing: -0.5em;
     background-color: #fff;

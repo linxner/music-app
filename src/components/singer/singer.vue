@@ -1,5 +1,5 @@
 <template>
-    <div>
-        歌手
+    <div class="singer">
+     我是歌手
     </div>
 </template>

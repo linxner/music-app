@@ -1,12 +1,12 @@
 <template>
-  <div class="header">
+  <div class="header" v-show="isHas">
     <ul class="tab">
       <li>
         <i class="iconfont icon-lanmu"></i>
       </li>
       <router-link tag="li" to="/mine">我的</router-link>
-      <router-link tag="li" to="musichouse">音乐馆</router-link>
-      <router-link tag="li" to="found">发现</router-link>
+      <router-link tag="li" to="/musichouse">音乐馆</router-link>
+      <router-link tag="li" to="/found">发现</router-link>
       <li>
         <i class="el-icon-plus"></i>
       </li>
@@ -14,40 +14,59 @@
     <el-input placeholder="搜索" prefix-icon="el-icon-search"></el-input>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      isHas: true
+    }
+  },
+  watch:{
+    '$route'(){
+       if(this.$route.name==='Singer'){
+        this.isHas=false
+      }else{
+        this.isHas=true
+      }
+    }
+  }
+}
+</script>
 <style lang="less" scoped>
-
 @import "~less/index.less";
 
 .header {
-    background-color: @background-color;
+  position: fixed;
+  top: 0;
+  background-color: @background-color;
+  width: 100%;
+  font-size: 1.6rem;
+  text-align: center;
+  padding-bottom: 10px;
+  z-index: 9999;
+  .tab {
     width: 100%;
-    font-size: 1.6rem;
-    text-align: center;
-    padding-bottom: 10px;
-    .tab {
-        width: 100%;
-        list-style: none;
-        line-height: 50px;
-        letter-spacing: -0.5em;
-        li {
-            display: inline-block;
-            letter-spacing: normal;
-            width: 20%;
-          &:nth-of-type(1) {
-            box-sizing: border-box;
-            text-align: left;
-            padding-left: 15px;
-          }
-            &:nth-of-type(5) {
-                box-sizing: border-box;
-                text-align: right;
-                padding-right: 15px;
-            }
-        }
+    list-style: none;
+    line-height: 50px;
+    letter-spacing: -0.5em;
+    li {
+      display: inline-block;
+      letter-spacing: normal;
+      width: 20%;
+      &:nth-of-type(1) {
+        box-sizing: border-box;
+        text-align: left;
+        padding-left: 15px;
+      }
+      &:nth-of-type(5) {
+        box-sizing: border-box;
+        text-align: right;
+        padding-right: 15px;
+      }
     }
-    .el-input {
-        width: 90%;
-    }
-
+  }
+  .el-input {
+    width: 90%;
+  }
 }
 </style>

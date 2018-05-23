@@ -6,6 +6,7 @@
     <div class="dot">
       <span v-for="(item,index) in dots" :class="{active:currentPage===index}"></span>
     </div>
+    <div class="carousel-cover" ref="carouselCover"></div>
   </div>
 </template>
 
@@ -31,7 +32,16 @@ export default {
   data() {
     return {
       dots: [],
-      currentPage: 0
+      currentPage: 0,
+      scroll: '',
+      coverHeight: ''
+    }
+  },
+  watch: {
+    scroll() {
+      if (this.scroll < this.coverHeight)
+        var coverOpc = (this.coverHeight - this.scroll) / this.coverHeight
+      $('.carousel-cover').css('opacity', 1 - coverOpc)
     }
   },
   mounted() {
@@ -39,16 +49,21 @@ export default {
       this._setWidth()
       this._initDots()
       this._initSlider()
+      this._setHeight()
       if (this.autoPlay) {
         this._play()
       }
     }, 20)
+    window.addEventListener('scroll', function () {
+      this.scroll = $(window).scrollTop()
+    }.bind(this))
     window.addEventListener('resize', () => {
       if (!this.slider) {
         return
       }
       this._setWidth(true)
       this.slider.refresh()
+      this._setHeight()
     })
   },
   activated() {
@@ -108,11 +123,25 @@ export default {
       this.timmer = setTimeout(() => {
         this.slider.next()
       }, this.interval)
+    },
+    _setHeight() {
+      this.coverHeight = this.$refs.slider.offsetHeight
+      $('.carousel-cover').css('height', this.coverHeight)
     }
   }
 }
 </script>
 <style lang="less" scoped>
+.carousel-cover {
+  width: 100%;
+  height: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  opacity: 0;
+  z-index: 98;
+}
 .slider {
   min-height: 1px;
   .slider-items {

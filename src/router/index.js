@@ -21,7 +21,7 @@ export default new Router({
       name: 'musicHouse',
       component: musicHouse,
       children: [{
-        path: '/singer',
+        path: 'singer',
         name: 'Singer',
         component: Singer
       }]
