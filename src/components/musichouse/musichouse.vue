@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="musichouse" v-show="iHas">
+    <div class="musichouse">
       <div class="slider-wraper" v-if="slider.length">
         <carousel>
           <div v-for="item in slider" :key="item.id" class="sliderlist">
@@ -33,7 +33,7 @@ import Tabs from "../tab/tab.vue";
 import { getData } from "assets/js/ajax";
 import { url } from "assets/js/url";
 import Recommend from 'components/recommend/recommend'
-import Singer from 'components/singer/singer'
+
 
 export default {
   data() {
@@ -47,27 +47,17 @@ export default {
     Carousel,
     Tabs,
     Recommend,
-    Singer
   },
   created() {
     this._getData();
   },
-  watch: {
-    '$route'() {
-      if (this.$route.name === 'Singer') {
-        this.iHas = false
-      } else {
-        this.iHas = true
-      }
-    }
-  },
   methods: {
     _getData() {
-      getData(url).then((res) => {
+      getData(url.musichouse.url).then((res) => {
         this.slider = res.focus.data.content
         this.hots = res.recomPlaylist.data.v_hot.splice(0, 6)
       })
-    }
+    },
   }
 };
 </script>

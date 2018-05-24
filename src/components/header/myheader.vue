@@ -1,5 +1,5 @@
 <template>
-  <div class="header" v-show="isHas">
+  <div class="header">
     <ul class="tab">
       <li>
         <i class="iconfont icon-lanmu"></i>
@@ -21,15 +21,6 @@ export default {
       isHas: true
     }
   },
-  watch:{
-    '$route'(){
-       if(this.$route.name==='Singer'){
-        this.isHas=false
-      }else{
-        this.isHas=true
-      }
-    }
-  }
 }
 </script>
 <style lang="less" scoped>
@@ -40,6 +31,7 @@ export default {
   top: 0;
   background-color: @background-color;
   width: 100%;
+  color: #fff;
   font-size: 1.6rem;
   text-align: center;
   padding-bottom: 10px;

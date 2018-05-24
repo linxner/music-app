@@ -1,12 +1,12 @@
 <template>
   <div class="tabs" ref="tabs">
     <ul class="tablist">
-      <router-link tag="li" :to="{name:'Singer'}">
+      <li @click="selected">
         <div>
           <i class="iconfont icon-rentou"></i>
         </div>
         <div>歌手</div>
-      </router-link>
+      </li>
       <router-link tag="li" to="rank">
         <div>
           <i class="iconfont icon-paihang"></i>
@@ -62,6 +62,11 @@ export default {
     _getTop() {
       this.Top = $('.tablist').css('top')
     },
+    selected(){
+      this.$router.push({
+        path:'/musichouse/singer'
+      })
+    }
   }
 }
 </script>

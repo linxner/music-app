@@ -1,98 +1,94 @@
 <template>
   <div class="footer">
-    <ul class="player-min">
-      <li class="singer-img"></li>
-      <li class="song-and-singer">
-        <span class="song-name">刚刚好</span>
-        <br>
-        <span class="singer-name">薛之谦</span>
-      </li>
-      <li class="placehold"></li>
-      <li class="pause-btn">
-        <i class="el-icon-caret-right"></i>
-      </li>
-      <li class="song-menu">
-        <i class="iconfont icon-yinle"></i>
-      </li>
-    </ul>
+    <div class="footer-wrape">
+      <div class="img-min">
+        <img src="" alt="">
+      </div>
+      <div class="another">
+        <div class="song-singer">
+          <span>刚刚好</span>
+          <span>薛之谦</span>
+        </div>
+        <div class="pause-list">
+          <span class="pause">
+            <i class="el-icon-caret-right"></i>
+          </span>
+          <i class="icon iconfont icon-yinle"></i>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import {data} from "../../assets/js/ajax";
+import { data } from "../../assets/js/ajax";
 
-  export default {
-  // data(){
-  //   return {
-  //     url:data.focus
-  //   }
-  // },
-  //   created(){
-  //   console.log(this.url)
-  //   }
-  }
+export default {
+
+}
 </script>
 
 <style scoped lang="less">
-  @import "~less/index.less";
+@import "~less/index.less";
 
-  .footer {
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 99999999;
+  background: #fff;
+  .footer-wrape {
     width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    .player-min {
-      list-style: none;
-      height: 70px;
-      width: 100%;
-      letter-spacing: -0.5em;
-      li {
-        vertical-align: top;
-        width: 5%;
-        height: 50px;
-        display: inline-block;
-        letter-spacing: normal;
-        margin: 5px;
-        color: #000;
-      }
-      .singer-img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: #ccc;
-        margin-left: 10px;
-      }
-      .song-and-singer {
-        width: 30%;
-        height: 50px;
-        margin: 20px 10px;
-        .song-name {
-          font-size: 16px;
-        }
-        .singer-name {
-          display: block;
-          margin-top: 5px;
-        }
-      }
-
-      .pause-btn {
-        box-sizing: border-box;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 10px;
+    .img-min {
+      float: left;
+      img {
+        display: block;
         width: 50px;
-        border: 3px solid @background-color;
+        height: 50px;
         border-radius: 50%;
-        font-size: 40px;
-        text-align: center;
-        line-height: 50px;
-        color: @background-color;
-        margin: 10px 20px 0;
+        background-color: #333;
+        margin-right: 20px;
       }
-      .song-menu {
-        margin: 18px 0;
-        i {
-          color: @background-color;
-          font-size: 38px;
+    }
+    .another {
+      width: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .song-singer {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        line-height: 1.5;
+      }
+      .pause-list {
+        display: flex;
+        align-items: center;
+        .pause {
+          height: 35px;
+          width: 35px;
+          border-radius: 50%;
+          border: 1px solid #409eff;
+          text-align: center;
+          margin-right: 15px;
+          i {
+            font-size: 25px;
+            color: #409eff;
+            line-height: 35px;
+          }
+        }
+        i{
+          font-size: 25px;
+          color: #409eff;
         }
       }
     }
   }
+}
 </style>
