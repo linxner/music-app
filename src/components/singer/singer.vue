@@ -11,17 +11,17 @@
             </div>
         </div>
         <div class="s-key">
-            <scroll class="key-menu" :scrollX="scrollX">
-                <ul class="key-list">
+            <scroll class="key-menu">
+                <ul class="key-list" :scrollX="true">
                     <li v-for="item in area" :key="item.id">{{item.name}}</li>
                 </ul>
             </scroll>
-            <scroll class="key-menu" :scrollX="scrollX">
+            <scroll class="key-menu" :scrollX="true">
                 <ul class="key-list">
                     <li v-for="item in sex" :key="item.id">{{item.name}}</li>
                 </ul>
             </scroll>
-            <scroll class="key-menu" :scrollX="scrollX">
+            <scroll class="key-menu" :scrollX="true">
                 <ul class="key-list">
                     <li v-for="item in genre" :key="item.id">{{item.name}}</li>
                 </ul>
@@ -30,27 +30,34 @@
         <div class="search-nav">
             <span>热</span>
         </div>
-        <div class="singer-menu">
-            <ul class="singer-list">
-                <li v-for="item in singerList" :key="item.id">
-                    <img :src="item.singer_pic" alt="">
-                    <div class="singer-name">
-                        <span>{{item.singer_name}}</span>
-                        <i class="el-icon-arrow-right"></i>
-                    </div>
-                </li>
-            </ul>
+        <div>
+            <div class="singer-menu">
+                <ul class="singer-list">
+                    <li v-for="item in singerList" :key="item.id">
+                        <img v-lazy="item.singer_pic" alt="">
+                        <div class="singer-name">
+                            <span>{{item.singer_name}}</span>
+                            <i class="el-icon-arrow-right"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="loading-wrapper" v-show="!singerList.length">
+                <loading></loading>
+            </div>
         </div>
     </div>
 </template>
 <script>
-import Scroll from 'components/scroll/scroll'
+import Scroll from 'common/scroll/bscroll'
 import { url } from "assets/js/url"
 import { getData } from "assets/js/ajax"
+import Loading from 'common/loading/loading'
 
 export default {
     data() {
         return {
+            data: [],
             singerList: [],
             area: [],
             genre: [],
@@ -58,15 +65,18 @@ export default {
         }
     },
     created() {
-        this.scrollX = true
+        setTimeout(() => {
+            this._getData()
+        }, 20);
+
     },
     mounted() {
-        this._getData()
-        console.log(this.area)
+
     },
     methods: {
         _getData() {
             getData(url.singer.url).then((res) => {
+                this.data = res.singerList.data.singerlist
                 this.singerList = res.singerList.data.singerlist
                 this.area = res.singerList.data.tags.area
                 this.genre = res.singerList.data.tags.genre
@@ -76,7 +86,8 @@ export default {
         }
     },
     components: {
-        Scroll
+        Scroll,
+        Loading
     }
 }
 </script>
@@ -87,6 +98,7 @@ export default {
   width: 100%;
   position: absolute;
   top: 0;
+  left: 0;
   z-index: 99999;
   background-color: #fff;
   color: #000;
@@ -164,6 +176,7 @@ export default {
     line-height: 2;
     box-sizing: border-box;
     padding: 0 20px;
+    font-size: 1rem;
   }
   .singer-menu {
     width: 100%;

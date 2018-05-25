@@ -20,7 +20,8 @@
     "vue-resource": "1.5.0",
     "axios": "^0.18.0",
     "better-scroll": "1.11.1",
-    "velocity":"0.7.2"
+    "velocity":"0.7.2",
+    "vue-lazyload":"1.2.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

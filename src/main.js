@@ -10,10 +10,14 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/icons/font_6h3mvowtawcdi/iconfont.css'
 import $ from 'jquery'
 import axios from 'axios'
+import vueLazyload from 'vue-lazyload'
 
 Vue.prototype.$axios=axios
 
 Vue.use(ElementUI)
+Vue.use(vueLazyload,{
+  loading:require('assets/images/person_300.png'),
+})
 
 Vue.config.productionTip = false
 
