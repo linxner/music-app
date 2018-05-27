@@ -45,6 +45,11 @@
             <div class="loading-wrapper" v-show="!singerList.length">
                 <loading></loading>
             </div>
+            <list-view>
+                <ul class="list-view">
+                    <li v-for="item in index" :key="item.id">{{item.name.slice(0,1)}}</li>
+                </ul>
+            </list-view>
         </div>
     </div>
 </template>
@@ -53,6 +58,7 @@ import Scroll from 'common/scroll/bscroll'
 import { url } from "assets/js/url"
 import { getData } from "assets/js/ajax"
 import Loading from 'common/loading/loading'
+import listView from 'components/listview/listview'
 
 export default {
     data() {
@@ -61,33 +67,32 @@ export default {
             singerList: [],
             area: [],
             genre: [],
-            sex: []
+            sex: [],
+            index:[]
         }
     },
     created() {
         setTimeout(() => {
             this._getData()
         }, 20);
-
-    },
-    mounted() {
-
     },
     methods: {
         _getData() {
             getData(url.singer.url).then((res) => {
-                this.data = res.singerList.data.singerlist
                 this.singerList = res.singerList.data.singerlist
                 this.area = res.singerList.data.tags.area
                 this.genre = res.singerList.data.tags.genre
                 this.sex = res.singerList.data.tags.sex
+                this.index= res.singerList.data.tags.index
+                this.data = this.singerList.concat(this.area, this.sex, this.genre)
             })
 
         }
     },
     components: {
         Scroll,
-        Loading
+        Loading,
+        listView
     }
 }
 </script>
