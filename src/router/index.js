@@ -4,6 +4,9 @@ import Mine from 'components/mine/mine'
 import musicHouse from 'components/musichouse/musichouse'
 import Found from 'components/found/found'
 import Singer from 'components/singer/singer'
+import singerDetail from 'components/singer-detail/singerdetail'
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -23,7 +26,11 @@ export default new Router({
       children: [{
         path: 'singer',
         name: 'Singer',
-        component: Singer
+        component: Singer,
+        children: [{
+          path: ':id',
+          component: singerDetail
+        }]
       }]
     },
     {
