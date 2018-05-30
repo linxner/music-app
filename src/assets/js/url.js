@@ -55,9 +55,8 @@ export function getSingerListUrl(index) {
 }
 export function getSingerDetail(mid, num) {
   const baseurl = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?'
-  commonparams.jsonpCallback = 'singer_detail'
-  // commonparams.g_tk = 1583847940
-  // // console.log(commonparams)
+  commonparams.jsonpCallback = 'MusicJsonCallbacksinger_track'
+  commonparams.g_tk = 1583847940
   let a = Object.assign({}, commonparams, {
     singermid: mid,
     order: 'listen',
@@ -65,10 +64,12 @@ export function getSingerDetail(mid, num) {
     num: num,
     songstatus: 1
   })
-  // console.log(baseurl + param(a))
   return baseurl + param(a)
-  // console.log(baseurl+param(a))
-  // console.log('ok')
-  //https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?&g_tk=876919539&jsonpCallback=getUCGI483987655666114&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&singermid=002J4UUk29y8BY&order=listen&begin=0&num=30&songstatus=1
-//https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?&g_tk=1583847940&jsonpCallback=MusicJsonCallbacksinger_track&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&singermid=002J4UUk29y8BY&order=listen&begin=0&num=30&songstatus=1
+}
+export function getFans(mid) {
+  let a = Object.assign({}, commonparams, {
+    singermid:mid,
+    utf8: 1,
+    rnd: 1527668797802
+  })
 }

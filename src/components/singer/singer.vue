@@ -70,6 +70,7 @@ import Loading from 'common/loading/loading'
 import listView from 'components/listview/listview'
 import Singer from 'assets/js/singer'
 import { getSingerListUrl } from "assets/js/url"
+import { mapMutations } from 'vuex'
 
 
 
@@ -86,17 +87,9 @@ export default {
         }
     },
     created() {
-        // clearTimeout(timmer)
-        // var timmer = setTimeout(() => {
-        //     console.log(i)
-        // }, 1000)
         setTimeout(() => {
             this._getData(getSingerListUrl(-100))
-            // console.log(this.singerList)
-        }, 20);
-        // setTimeout(() => {
-        //     console.log(this.url)
-        // }, 200)
+        }, 20)
     },
     methods: {
         _getData(url) {
@@ -137,7 +130,12 @@ export default {
             this.$router.push({
                 path: `singer/${item.singer_id}`
             })
-        }
+            this.setSinger(item)
+        },
+        ...mapMutations({
+            setSinger: 'SET_SINGER'
+        })
+
         // selected(item) {
         //     let a=[]
         //     for (let key in this.singerList) {
@@ -330,10 +328,12 @@ export default {
     }
   }
 }
-.slide-enter-active,.slide-leave-active{
-    transition: all .3s;
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
 }
-.slide-enter,.slide-leave-to{
-    transform: translate3d(100%,0,0)
+.slide-enter,
+.slide-leave-to {
+  transform: translate3d(100%, 0, 0);
 }
 </style>

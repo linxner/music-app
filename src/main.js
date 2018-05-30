@@ -11,12 +11,13 @@ import './assets/icons/font_6h3mvowtawcdi/iconfont.css'
 import $ from 'jquery'
 import axios from 'axios'
 import vueLazyload from 'vue-lazyload'
+import store from './store'
 
-Vue.prototype.$axios=axios
+Vue.prototype.$axios = axios
 
 Vue.use(ElementUI)
-Vue.use(vueLazyload,{
-  loading:require('assets/images/person_300.png'),
+Vue.use(vueLazyload, {
+  loading: require('assets/images/person_300.png'),
 })
 
 Vue.config.productionTip = false
@@ -25,6 +26,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: {
     App
   },
