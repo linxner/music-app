@@ -19,7 +19,7 @@
                     <li v-for="item in songs" :key="item.id">
                         <div class="songs">
                             <div>{{item.musicData.songname}}</div>
-                            <span>{{item.musicData.singer[0].name}}.{{item.musicData.albumname}}</span>
+                            <span>{{item.musicData.singer[0].name}}·{{item.musicData.albumname}}</span>
                         </div>
                         <div class="icons">
                             <span>MV</span>
@@ -36,26 +36,27 @@ import { mapGetters } from 'vuex'
 
 
 export default {
+    props: {
+        songs: {
+            type: Array,
+            default: []
+        }
+    },
     data() {
         return {
             input: '',
-            songs: []
         }
     },
     created() {
-        this.songs = this.song
-        console.log(this.songs)
 
     },
     computed: {
-        ...mapGetters([
-            'song',
-        ]),
-        songName() {
-
-        }
+      
     },
     mounted() {
+        // console.log(this.songs)
+    },
+    watch: {
 
     }
 }

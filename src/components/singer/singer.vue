@@ -56,9 +56,7 @@
                     <li v-for="item in index" :key="item.id">{{item.name.slice(0,1)}}</li>
                 </ul>
             </list-view>
-            <keep-alive>
-                <router-view></router-view>
-            </keep-alive>
+            <router-view></router-view>
         </div>
     </transition>
 </template>
@@ -88,11 +86,12 @@ export default {
     },
     created() {
         setTimeout(() => {
-            this._getData(getSingerListUrl(-100))
+            this._getData()
         }, 20)
     },
     methods: {
-        _getData(url) {
+        _getData() {
+            let url=getSingerListUrl(-100)
             getData(url).then((res) => {
                 this.singerList = res.singerList.data.singerlist
                 this.area = res.singerList.data.tags.area

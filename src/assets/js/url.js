@@ -8,11 +8,7 @@ export const url = {
     url: 'https://u.y.qq.com/cgi-bin/musicu.fcg?callback=getUCGI19834496140639613&g_tk=1583847940&jsonpCallback=getUCGI19834496140639613&loginUin=342709615&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data=%7B%22comm%22%3A%7B%22ct%22%3A24%2C%22cv%22%3A10000%7D%2C%22singerList%22%3A%7B%22module%22%3A%22Music.SingerListServer%22%2C%22method%22%3A%22get_singer_list%22%2C%22param%22%3A%7B%22area%22%3A-100%2C%22sex%22%3A-100%2C%22genre%22%3A-100%2C%22index%22%3A-100%2C%22sin%22%3A0%2C%22cur_page%22%3A1%7D%7D%7D'
   }
 }
-
-const s = 'getUCGI' + (Math.random() + '').replace('0.', '')
 export const commonparams = {
-  g_tk: 876919539,
-  jsonpCallback: s,
   loginUin: 0,
   hostUin: 0,
   format: 'jsonp',
@@ -51,13 +47,19 @@ export function getSingerListUrl(index) {
       }
     }
   }
-  return baseurl + s + param(commonparams) + '&data=' + encodeURIComponent(JSON.stringify(data))
+  let a = Object.assign({
+    g_tk: 876919539,
+    jsonpCallback: 'getUCGI' + (Math.random() + '').replace('0.', '')
+  }, commonparams)
+  return baseurl +a.jsonpCallback+ param(a) + '&data=' + encodeURIComponent(JSON.stringify(data))
 }
 export function getSingerDetail(mid, num) {
   const baseurl = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?'
-  commonparams.jsonpCallback = 'MusicJsonCallbacksinger_track'
-  commonparams.g_tk = 1583847940
-  let a = Object.assign({}, commonparams, {
+
+  let a = Object.assign({
+    g_tk: 1583847940,
+    jsonpCallback: 'MusicJsonCallbacksinger_track'
+  }, commonparams, {
     singermid: mid,
     order: 'listen',
     begin: 0,
@@ -67,9 +69,14 @@ export function getSingerDetail(mid, num) {
   return baseurl + param(a)
 }
 export function getFans(mid) {
-  let a = Object.assign({}, commonparams, {
-    singermid:mid,
+  const baseurl = 'https://c.y.qq.com/rsc/fcgi-bin/fcg_order_singer_getnum.fcg?'
+  let a = Object.assign({
+    g_tk: 1583847940,
+    jsonpCallback: `orderNum${mid}${+new Date}`
+  }, commonparams, {
+    singermid: mid,
     utf8: 1,
-    rnd: 1527668797802
+    rnd: +new Date
   })
+  return baseurl + param(a)
 }
