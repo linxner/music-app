@@ -8,12 +8,11 @@
                 <li>详情</li>
             </ul>
         </div>
-        <song-list :songs="songs"></song-list>
+        <song-list :songs="songs" @select="selectItem"></song-list>
     </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { getData } from 'assets/js/ajax'
 import { getSingerDetail } from 'assets/js/url'
 import songList from 'components/song-list/songlist'
@@ -81,6 +80,15 @@ export default {
                 // this.getSong(this.songs)
             })
         },
+        selectItem(item, index) {
+            this.selectPlay({
+                list: this.songs,
+                index
+            })
+        },
+        ...mapActions([
+            'selectPlay'
+        ])
     },
     components: {
         songList

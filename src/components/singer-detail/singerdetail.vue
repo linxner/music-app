@@ -10,9 +10,7 @@
                     <i class="el-icon-more"></i>
                 </div>
             </div>
-            <div class="detail-bgimg-wrapper" ref="imgHeight">
-                <div class="detail-bgimg" :style="bgimg" ref="bgimg"></div>
-                <div class="detail-bgimg-cover" ref="cover"></div>
+            <div class="detail-bgimg" :style="bgimg" ref="bgimg">
                 <div class="detail-singer-desc-wrapper" ref="desc">
                     <div class="detail-singer-desc">
                         <span class="name">{{singerName}}</span>
@@ -30,6 +28,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="detail-bgimg-cover" ref="cover"></div>
             </div>
             <div class="content-layer" ref="layer"></div>
             <scroll class="detail-content-wrapper" ref="detailContent" @scroll="scroll" :listen-scroll="listenScroll" :probe-type="probeType">
@@ -83,7 +82,7 @@ export default {
         }
     },
     mounted() {
-        this.imgHeight = this.$refs.imgHeight.clientHeight
+        this.imgHeight = this.$refs.bgimg.clientHeight
         this.$refs.detailContent.$el.style.top = this.imgHeight + 'px'
         this.$refs.layer.style.top = this.imgHeight + 'px'
     },
@@ -97,24 +96,46 @@ export default {
     },
     watch: {
         scrollY(t) {
+            let scale = 1
+            let zIndex = 0
+            let blur = 0
+            let opacity = 0.2
             let topHeight = -this.imgHeight + 50
             let maxtranslateY = Math.max(topHeight, t)
+            const a = Math.abs(t / this.imgHeight)
+            if (t > 0) {
+                scale = 1 + a
+                zIndex = 20
+            } else {
+                blur = Math.min(20, 20 * a)
+                opacity = 0.2 + Math.min(Math.abs(t / (topHeight)), 0.3)
+            }
+            this.$refs.bgimg.style['transform'] = `scale(${scale})`
+            this.$refs.bgimg.style['webkitTransform'] = `scale(${scale})`
+            this.$refs.bgimg.style.zIndex = zIndex
+            // console.log(this.imgHeight)
+            this.$refs.cover.style['backdrop'] = `blur(${blur}px)`
+            this.$refs.cover.style['webkitBackdrop'] = `blur(${blur}px)`
+            this.$refs.cover.style.opacity = opacity
+
+
             this.$refs.layer.style['transform'] = `translate3d(0,${maxtranslateY}px,0)`
             this.$refs.layer.style['webkitTransform'] = `translate3d(0,${maxtranslateY}px,0)`
-            if (t < 0) {
-                this.$refs.cover.style.paddingTop = (this.imgHeight + t) + 'px'
-                this.$refs.cover.style.opacity = 0.2 + Math.min(Math.abs(t / (topHeight)), 0.3)
-            }
+            // if (t < 0) {
+            //     this.$refs.cover.style.paddingTop = (this.imgHeight + t) + 'px'
+            // }
+            // else {
+            //     this.$refs.bgimg.style['transform'] = `scale(${Math.abs(t / this.imgHeight) + 1})`
+            //     // this.$refs.cover.style.paddingTop = t + this.imgHeight + 'px'
+            // }
             if (t < topHeight) {
                 this.$refs.bgimg.style.paddingTop = 0
                 this.$refs.bgimg.style.zIndex = 1
                 this.$refs.bgimg.style.height = 50 + 'px'
-                this.$refs.cover.style.paddingTop = 50 + 'px'
                 this.$refs.desc.style.display = 'none'
                 this.singername = true
             } else {
                 this.$refs.bgimg.style.paddingTop = '75%'
-                this.$refs.bgimg.style.zIndex = -1
                 this.$refs.bgimg.style.height = 0
                 this.$refs.desc.style.display = 'block'
                 this.singername = false
@@ -154,27 +175,21 @@ export default {
       }
     }
   }
-  .detail-bgimg-wrapper {
+  .detail-bgimg {
+    position: relative;
     width: 100%;
-    position: absolute;
-    top: 0;
+    padding-top: 75%;
+    background-repeat: no-repeat;
+    background-size: cover;
     .detail-bgimg-cover {
       position: absolute;
       top: 0;
+      left: 0;
       width: 100%;
-      z-index: 1;
-      padding-top: 75%;
-      background-color: #000;
+      height: 100%;
+      background-color: #071727;
       opacity: 0.2;
     }
-    .detail-bgimg {
-      position: relative;
-      width: 100%;
-      padding-top: 75%;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
     .detail-singer-desc-wrapper {
       width: 100%;
       position: absolute;
@@ -183,7 +198,7 @@ export default {
       text-align: center;
       margin-bottom: 8px;
       font-weight: 300;
-      z-index: 2;
+      z-index: 1;
       .detail-singer-desc {
         width: 70%;
         display: inline-flex;
@@ -236,8 +251,6 @@ export default {
     position: fixed;
     bottom: 0;
     top: 0;
-    left: 0;
-    right: 0;
   }
 }
 .slide-enter-active,

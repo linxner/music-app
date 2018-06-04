@@ -16,7 +16,7 @@
             </div>
             <div class="song-lists">
                 <ul>
-                    <li v-for="item in songs" :key="item.id">
+                    <li v-for="(item,index) in songs" :key="item.id" @click="selectItem(item,index)">
                         <div class="songs">
                             <div>{{item.musicData.songname}}</div>
                             <span>{{item.musicData.singer[0].name}}·{{item.musicData.albumname}}</span>
@@ -32,8 +32,6 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-
 
 export default {
     props: {
@@ -47,18 +45,11 @@ export default {
             input: '',
         }
     },
-    created() {
-
-    },
-    computed: {
-      
-    },
-    mounted() {
-        // console.log(this.songs)
-    },
-    watch: {
-
+methods:{
+    selectItem(item,index){
+        this.$emit('select',item,index)
     }
+}
 }
 </script>
 <style lang="less" scoped>
