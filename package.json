@@ -20,9 +20,10 @@
     "vue-resource": "1.5.0",
     "axios": "^0.18.0",
     "better-scroll": "1.11.1",
-    "velocity":"0.7.2",
-    "vue-lazyload":"1.2.3",
-    "vuex": "3.0.1"
+    "vue-lazyload": "1.2.3",
+    "vuex": "3.0.1",
+    "velocity-animate": "1.5.1",
+    "mint-ui": "2.2.13"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -81,11 +82,12 @@
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0",
-    "less":"3.0.4",
+    "less": "3.0.4",
     "less-loader": "4.1.0",
-    "element-ui":"2.3.8",
-    "jsonp":"0.2.1",
-    "express": "4.16.3"
+    "element-ui": "2.3.8",
+    "jsonp": "0.2.1",
+    "express": "4.16.3",
+    "font-awesome": "4.7.0"
   },
   "engines": {
     "node": ">= 6.0.0",

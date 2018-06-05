@@ -51,7 +51,7 @@ export function getSingerListUrl(index) {
     g_tk: 876919539,
     jsonpCallback: 'getUCGI' + (Math.random() + '').replace('0.', '')
   }, commonparams)
-  return baseurl +a.jsonpCallback+ param(a) + '&data=' + encodeURIComponent(JSON.stringify(data))
+  return baseurl + a.jsonpCallback + param(a) + '&data=' + encodeURIComponent(JSON.stringify(data))
 }
 export function getSingerDetail(mid, num) {
   const baseurl = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?'
@@ -79,4 +79,26 @@ export function getFans(mid) {
     rnd: +new Date
   })
   return baseurl + param(a)
+}
+
+// import axios from 'axios'
+
+export function getMusic(mid) {
+  const baseurl = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg?'
+  const data = Object.assign({
+    g_tk: 5381,
+    jsonpCallback: 'MusicJsonCallback' + (Math.random() + '').replace('0.', '')
+  }, commonparams, {
+    cid: 205361747,
+    uin: 0,
+    songmid: mid,
+    filename: `C400${mid}.m4a`,
+    guid: 2693623942
+  })
+  return baseurl + param(data)
+  // return axios.get(url,{
+  //   params:data
+  // }).then((res)=>{
+  //   return Promise.resolve(res.data)
+  // })
 }

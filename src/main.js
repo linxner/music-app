@@ -12,6 +12,7 @@ import $ from 'jquery'
 import axios from 'axios'
 import vueLazyload from 'vue-lazyload'
 import store from './store'
+import 'font-awesome/css/font-awesome.css'
 
 Vue.prototype.$axios = axios
 
