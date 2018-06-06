@@ -17,8 +17,8 @@
             <span class="line"></span>
           </div>
         </div>
-        <div class="f-img" :class="imgCls">
-          <img :src="imgUrl" alt="" ref="fullImg">
+        <div class="f-img" :class="imgCls" ref="fullImg">
+          <img :src="imgUrl" alt="">
         </div>
         <div class="f-lyric">
           <span></span>
@@ -27,19 +27,19 @@
           <span></span>
         </div>
         <div class="f-footer">
-          <my-progress></my-progress>
+          <my-progress :currentTime="currentTime" :duration="duration" @newPercent="newPercent"></my-progress>
           <div class="f-function">
-            <div class="select-playmode">
-              <i class="fa fa-random" aria-hidden="true"></i>
+            <div class="select-playmode" @click="changeMode">
+              <i class="fa" :class="iconMode" aria-hidden="true"></i>
             </div>
-            <div class="go-back" @click="prev">
+            <div class="go-back" @click="prev" :class="disableCls">
               <i class="fa fa-step-backward" aria-hidden="true"></i>
             </div>
-            <div class="pause-play" @click="pauseAndBegin">
+            <div class="pause-play" @click="pauseAndBegin" :class="disableCls">
               <i class="fa fa-pause fa-2x" aria-hidden="true" v-show="playing"></i>
               <i class="fa fa-play fa-2x" aria-hidden="true" v-show="!playing"></i>
             </div>
-            <div class="go-back" @click="next">
+            <div class="go-back" @click="next" :class="disableCls">
               <i class="fa fa-step-forward" aria-hidden="true"></i>
             </div>
             <div class="play-list">
@@ -65,17 +65,19 @@
             <span v-html="currentSong.musicData.songname"></span>
             <span v-html="currentSong.musicData.singer[0].name"></span>
           </div>
-          <div class="pause-list">
-            <div class="mini-pause-play" @click.stop="pauseAndBegin">
+        </div>
+        <div class="pause-list">
+          <div class="mini-pause-play" @click.stop="pauseAndBegin">
+            <pro-circle :percent="percent">
               <i class="fa fa-pause" aria-hidden="true" v-show="playing"></i>
               <i class="fa fa-play" aria-hidden="true" v-show="!playing"></i>
-            </div>
-            <i class="icon iconfont icon-yinle"></i>
+            </pro-circle>
           </div>
+          <i class="icon iconfont icon-yinle"></i>
         </div>
       </div>
     </transition>
-    <audio :src="musicUrl" ref="audio"></audio>
+    <audio :src="musicUrl" ref="audio" @canplay="ready" @error="error" @timeupdate="upDateTime"></audio>
   </div>
 </template>
 
@@ -86,16 +88,22 @@ import myProgress from 'components/progress/progress'
 import { getMusic } from 'assets/js/url'
 import { getData } from 'assets/js/ajax'
 import { createSong } from 'assets/js/singer'
+import proCircle from 'components/pro-circle/procircle'
+import { playMode } from 'api/config'
 
 export default {
   data() {
     return {
       filename: '',
-      vkey: ''
+      vkey: '',
+      songReady: false,
+      currentTime: 0,
     }
   },
   created() {
-    this._getMusic()
+    setTimeout(() => {
+      this._getMusic()
+    }, 20)
   },
   methods: {
     back() {
@@ -151,18 +159,47 @@ export default {
       this.setPlaying(!this.playing)
     },
     prev() {
+      if (!this.songReady) {
+        return
+      }
       let index = this.currentIndex - 1
       if (index === -1) {
         index = this.playList.length - 1
       }
       this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.pauseAndBegin()
+      }
+      this.songReady = false
+    },
+    upDateTime(e) {
+      this.currentTime = e.target.currentTime
     },
     next() {
+      if (!this.songReady) {
+        return
+      }
       let index = this.currentIndex + 1
       if (index === this.playList.length) {
         index = 0
       }
       this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.pauseAndBegin()
+      }
+      this.songReady = false
+    },
+    ready() {
+      this.songReady = true
+    },
+    error() {
+      this.songReady = true
+    },
+    newPercent(percent) {
+      this.$refs.audio.currentTime = percent * this.duration
+      if (!this.playing) {
+        this.pauseAndBegin()
+      }
     },
     _getPosAndScale() {
       const targetWidth = 50
@@ -175,10 +212,15 @@ export default {
       const y = window.innerHeight - paddingTop - width / 2 - paddingTop
       return { x, y, scale }
     },
+    changeMode() {
+      const mode = (this.mode + 1) % 3
+      this.setPlayMode(mode)
+    },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
       setPlaying: 'SET_PLAYING',
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayMode: 'SET_MODE'
     })
   },
   computed: {
@@ -191,12 +233,25 @@ export default {
     musicUrl() {
       return `http://dl.stream.qqmusic.qq.com/${this.filename}?vkey=${this.vkey}&guid=2693623942&uin=0&fromtag=66`
     },
+    disableCls() {
+      return this.songReady ? '' : 'disable'
+    },
+    duration() {
+      return this.currentSong.musicData.interval
+    },
+    percent() {
+      return this.currentTime / this.duration
+    },
+    iconMode() {
+      return this.mode === playMode.squence ? 'fa-list-ol' : this.mode === playMode.loop ? 'fa-undo' : 'fa-random'
+    },
     ...mapGetters([
       'fullScreen',
       'playList',
       'currentSong',
       'playing',
-      'currentIndex'
+      'currentIndex',
+      'mode'
     ]),
   },
   watch: {
@@ -216,7 +271,8 @@ export default {
     }
   },
   components: {
-    myProgress
+    myProgress,
+    proCircle
   }
 }
 </script>
@@ -364,14 +420,14 @@ export default {
         height: 50px;
         border-radius: 50%;
         background-color: #333;
-        margin-right: 20px;
       }
     }
     .another {
-      width: 80%;
       display: flex;
+      width: 80%;
       align-items: center;
       justify-content: space-between;
+      margin-left: 20px;
       .song-singer {
         display: flex;
         flex-direction: column;
@@ -384,29 +440,27 @@ export default {
           }
         }
       }
-      .pause-list {
-        display: flex;
-        align-items: center;
-        .mini-pause-play {
-          height: 35px;
-          width: 35px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid #409eff;
-          text-align: center;
-          margin-right: 15px;
-          i {
-            color: #409eff;
-            line-height: 35px;
-            font-size: 1.6em;
-          }
-        }
+    }
+    .pause-list {
+      display: flex;
+      align-items: center;
+      .mini-pause-play {
+        position: relative;
+        margin-right: 10px;
         i {
-          font-size: 25px;
+          position: absolute;
+          top: 0;
+          left: 21px;
           color: #409eff;
+          line-height: 55px;
+          font-size: 1.6em;
         }
+      }
+      .icon-yinle {
+        font-size: 2.4rem;
+        box-sizing: border-box;
+        padding-top: 4px;
+        color: #409eff;
       }
     }
   }
