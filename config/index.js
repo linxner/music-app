@@ -11,16 +11,16 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api/music': {
-        target: 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg',
-        bypass: function (res, req, proxyOptions) {
-          req.headers.referer = 'https://y.qq.com/portal/player.html'
-          req.headers.host = 'c.y.qq.com'
-        },
-        pathRewrite: {
-          '^/api/music': ''
-        }
-      }
+    //   '/api/music': {
+    //     target: 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg',
+    //     bypass: function (res, req, proxyOptions) {
+    //       req.headers.referer = 'https://y.qq.com/portal/player.html'
+    //       req.headers.host = 'c.y.qq.com'
+    //     },
+    //     pathRewrite: {
+    //       '^/api/music': ''
+    //     }
+    //   }
     },
 
     // Various Dev Server settings

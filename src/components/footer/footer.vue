@@ -17,7 +17,7 @@
             <span class="line"></span>
           </div>
         </div>
-        <div class="f-img">
+        <div class="f-img" :class="imgCls">
           <img :src="imgUrl" alt="" ref="fullImg">
         </div>
         <div class="f-lyric">
@@ -32,14 +32,14 @@
             <div class="select-playmode">
               <i class="fa fa-random" aria-hidden="true"></i>
             </div>
-            <div class="go-back">
+            <div class="go-back" @click="prev">
               <i class="fa fa-step-backward" aria-hidden="true"></i>
             </div>
-            <div class="pause-play">
-              <i class="fa fa-pause fa-2x" aria-hidden="true"></i>
-              <i class="fa fa-play fa-2x" aria-hidden="true" style="display:none;"></i>
+            <div class="pause-play" @click="pauseAndBegin">
+              <i class="fa fa-pause fa-2x" aria-hidden="true" v-show="playing"></i>
+              <i class="fa fa-play fa-2x" aria-hidden="true" v-show="!playing"></i>
             </div>
-            <div class="go-back">
+            <div class="go-back" @click="next">
               <i class="fa fa-step-forward" aria-hidden="true"></i>
             </div>
             <div class="play-list">
@@ -57,7 +57,7 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
-        <div class="img-min" ref="miniImg">
+        <div class="img-min" ref="miniImg" :class="imgCls">
           <img :src="imgUrl" alt="">
         </div>
         <div class="another">
@@ -66,9 +66,10 @@
             <span v-html="currentSong.musicData.singer[0].name"></span>
           </div>
           <div class="pause-list">
-            <span class="pause">
-              <i class="el-icon-caret-right"></i>
-            </span>
+            <div class="mini-pause-play" @click.stop="pauseAndBegin">
+              <i class="fa fa-pause" aria-hidden="true" v-show="playing"></i>
+              <i class="fa fa-play" aria-hidden="true" v-show="!playing"></i>
+            </div>
             <i class="icon iconfont icon-yinle"></i>
           </div>
         </div>
@@ -105,11 +106,10 @@ export default {
     },
     enter(el, done) {
       const { x, y, scale } = this._getPosAndScale()
-      // console.log(scale)
       Velocity(this.$refs.miniImg, {
         translateX: -x,
         translateY: -y,
-        scale: scale + .1
+        scale: scale
       }, {
           duration: 400,
           easing: 'linear',
@@ -123,13 +123,6 @@ export default {
         scale: 1,
       }, {
           duration: 50,
-        })
-      Velocity(this.$refs.fullImg, {
-        rotateZ: 360
-      }, {
-          loop: true,
-          duration: 30000,
-          easing: 'linear',
           complete: done
         })
     },
@@ -154,6 +147,23 @@ export default {
         this.vkey = res.data.items[0].vkey
       })
     },
+    pauseAndBegin() {
+      this.setPlaying(!this.playing)
+    },
+    prev() {
+      let index = this.currentIndex - 1
+      if (index === -1) {
+        index = this.playList.length - 1
+      }
+      this.setCurrentIndex(index)
+    },
+    next() {
+      let index = this.currentIndex + 1
+      if (index === this.playList.length) {
+        index = 0
+      }
+      this.setCurrentIndex(index)
+    },
     _getPosAndScale() {
       const targetWidth = 50
       const paddingLeft = 35
@@ -166,10 +176,15 @@ export default {
       return { x, y, scale }
     },
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN'
+      setFullScreen: 'SET_FULL_SCREEN',
+      setPlaying: 'SET_PLAYING',
+      setCurrentIndex: 'SET_CURRENT_INDEX'
     })
   },
   computed: {
+    imgCls() {
+      return this.playing ? 'play' : 'play pause'
+    },
     imgUrl() {
       return `http://y.gtimg.cn/music/photo_new/T002R300x300M000${this.currentSong.musicData.albummid}.webp`
     },
@@ -179,7 +194,9 @@ export default {
     ...mapGetters([
       'fullScreen',
       'playList',
-      'currentSong'
+      'currentSong',
+      'playing',
+      'currentIndex'
     ]),
   },
   watch: {
@@ -187,8 +204,14 @@ export default {
       this._getMusic()
     },
     musicUrl() {
-      this.$nextTick(() => {
+      clearTimeout(this.timmer)
+      this.timmer = setTimeout(() => {
         this.$refs.audio.play()
+      }, 1000)
+    },
+    playing(statu) {
+      this.$nextTick(() => {
+        statu ? this.$refs.audio.play() : this.$refs.audio.pause()
       })
     }
   },
@@ -252,6 +275,12 @@ export default {
       width: 100%;
       margin-top: 30px;
       text-align: center;
+      &.play {
+        animation: rotate 30s linear infinite;
+      }
+      &.pause {
+        animation-play-state: paused;
+      }
       img {
         display: inline-block;
         width: 80%;
@@ -274,14 +303,17 @@ export default {
         box-sizing: border-box;
         padding: 15px;
         .pause-play {
-          // font-size: 2em;
-          width: 60px;
-          height: 60px;
+          font-size: 1.2em;
+          width: 55px;
+          height: 55px;
           box-sizing: border-box;
           border: 2px solid #fff;
           border-radius: 50%;
           text-align: center;
-          line-height: 60px;
+          line-height: 55px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .go-back {
           font-size: 1.8em;
@@ -316,10 +348,16 @@ export default {
     align-items: center;
     box-sizing: border-box;
     padding: 0 10px;
-    z-index: 9999999;
+    z-index: 99999999999;
     background-color: #fff;
     .img-min {
       float: left;
+      &.play {
+        animation: rotate 30s linear infinite;
+      }
+      &.pause {
+        animation-play-state: paused;
+      }
       img {
         display: block;
         width: 50px;
@@ -349,17 +387,20 @@ export default {
       .pause-list {
         display: flex;
         align-items: center;
-        .pause {
+        .mini-pause-play {
           height: 35px;
           width: 35px;
           border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           border: 1px solid #409eff;
           text-align: center;
           margin-right: 15px;
           i {
-            font-size: 25px;
             color: #409eff;
             line-height: 35px;
+            font-size: 1.6em;
           }
         }
         i {
@@ -395,5 +436,13 @@ export default {
 .mini-enter,
 .mini-leave-to {
   opacity: 0;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
