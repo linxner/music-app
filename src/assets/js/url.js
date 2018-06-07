@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+
 export const url = {
   musichouse: {
     name: '音乐馆',
@@ -24,7 +27,7 @@ export function param(data) {
     let value = data[k] !== undefined ? data[k] : ''
     url += '&' + k + '=' + encodeURIComponent(value)
   }
-  return url ? url.substring(0) : ''
+  return url ? url.substring(1) : ''
 }
 
 export function getSingerListUrl(index) {
@@ -81,7 +84,6 @@ export function getFans(mid) {
   return baseurl + param(a)
 }
 
-// import axios from 'axios'
 
 export function getMusic(mid) {
   const baseurl = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg?'
@@ -101,4 +103,22 @@ export function getMusic(mid) {
   // }).then((res)=>{
   //   return Promise.resolve(res.data)
   // })
+}
+
+export function getLyric(musicid) {
+  const baseurl = '/lyric'
+  const data = Object.assign({
+    nobase64: 1,
+    musicid: musicid,
+    callback: 'jsonp1',
+    g_tk: 5381,
+    jsonpCallback: 'jsonp1'
+  }, commonparams)
+  // console.log(baseurl + param(data))
+  return axios.get(baseurl, {
+    params: data
+  }).then((res) => {
+    console.log(res)
+    return Promise.resolve(res.data)
+  })
 }

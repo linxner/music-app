@@ -77,7 +77,7 @@
         </div>
       </div>
     </transition>
-    <audio :src="musicUrl" ref="audio" @canplay="ready" @error="error" @timeupdate="upDateTime"></audio>
+    <audio :src="musicUrl" ref="audio" @canplay="ready" @error="error" @timeupdate="upDateTime" @ended="end"></audio>
   </div>
 </template>
 
@@ -90,6 +90,8 @@ import { getData } from 'assets/js/ajax'
 import { createSong } from 'assets/js/singer'
 import proCircle from 'components/pro-circle/procircle'
 import { playMode } from 'api/config'
+import { shuffle } from 'assets/js/util'
+import { getLyric } from 'assets/js/url'
 
 export default {
   data() {
@@ -103,6 +105,7 @@ export default {
   created() {
     setTimeout(() => {
       this._getMusic()
+      this.getLyric(this.currentSong.musicData.songid)
     }, 20)
   },
   methods: {
@@ -189,6 +192,13 @@ export default {
       }
       this.songReady = false
     },
+    end() {
+      this.next()
+    },
+    loop() {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+    },
     ready() {
       this.songReady = true
     },
@@ -215,12 +225,27 @@ export default {
     changeMode() {
       const mode = (this.mode + 1) % 3
       this.setPlayMode(mode)
+      let list = null
+      if (mode === playMode.random) {
+        list = shuffle(this.sequenceList)
+      } else {
+        list = this.sequenceList
+      }
+      this.resetCurrentIndex(list)
+      this.setPlayList(list)
+    },
+    resetCurrentIndex(list) {
+      let index = list.findIndex((item) => {
+        return item.musicData.songmid === this.currentSong.musicData.songmid
+      })
+      this.setCurrentIndex(index)
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
       setPlaying: 'SET_PLAYING',
       setCurrentIndex: 'SET_CURRENT_INDEX',
-      setPlayMode: 'SET_MODE'
+      setPlayMode: 'SET_MODE',
+      setPlayList: 'SET_PLAYLIST'
     })
   },
   computed: {
@@ -251,7 +276,8 @@ export default {
       'currentSong',
       'playing',
       'currentIndex',
-      'mode'
+      'mode',
+      'sequenceList'
     ]),
   },
   watch: {
@@ -380,7 +406,10 @@ export default {
           text-align: center;
           line-height: 40px;
         }
-        .select-playmode,
+        .select-playmode {
+          width: 5%;
+          font-size: 2em;
+        }
         .play-list {
           font-size: 2em;
         }

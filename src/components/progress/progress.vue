@@ -83,9 +83,6 @@ export default {
         const barWidth = this.$refs.progress.clientWidth
         this.$refs.progressCover.style.width = barWidth * newPer + 'px'
       }
-      if (newPer > 1) {
-        // this.$refs.progressCover.style.width = 0
-      }
     },
     // currentPos(e) {
     //   this.$refs.progressCover.style.width = e + 'px'
