@@ -11,5 +11,9 @@
 ### 动效
 #Vue中自带了transition标签，简直不要太好用，这边还用到了better-scroll框架，阻止浏览器默认滚动，实现滑动缓动，使体验更加真实。
 ### 数据
+#把所用到的量都取个名字，变量用小写，常量用大写，用let/const取代var，优先使用const，就不用担心全局变量污染了。需要操作的数据放在data中，接受props参数写成对象形式，声明一下数据类型，放个默认值防止报错会更好。数据驱动，明确你的数据是控制哪个部分的视图，取名字是最好的方法，只操作数据，尽量不要操作DOM。简单的数据传输使用props和$emit，复杂或者频繁的数据传输使用vuex，将数据集中管理到哪都能用，想改即改。
+
+
+
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
